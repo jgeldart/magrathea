@@ -1,0 +1,34 @@
+{% load wagtailcore_tags app_filters %}
+
+<section class="uk-section uk-section-{{ value.style }}">
+  <div class="uk-container">
+    <h3>Rotational characteristics</h3>
+
+    <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Rotational period</dt>
+          <dd>{{ page.rotational_period | quantity_convert:"hour" | quantity_magnitude | floatformat:2 }} hours</dd>
+          <dt>Planetary days in year</dt>
+          <dd>{{ page.local_days_in_year | quantity_magnitude | floatformat:2 }} planetary days</dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Obliquity</dt>
+          <dd>{{ page.obliquity | quantity_convert:"degree" | quantity_magnitude | floatformat:3 }}°</dd>
+          <dt>Precessional period</dt>
+          <dd>{{ page.precessional_period | quantity_convert:"year" | quantity_magnitude | floatformat:"0" }} years</dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Tropics (N/S)</dt>
+          <dd>{{ page.tropics | quantity_convert:"degree" | quantity_magnitude | floatformat:3 }}°</dd>
+          <dt>Polar circles (N/S)</dt>
+          <dd>{{ page.polar_circles | quantity_convert:"degree" | quantity_magnitude | floatformat:3 }}°</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

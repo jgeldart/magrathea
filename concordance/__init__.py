@@ -12,6 +12,7 @@ ureg.define('earth_mass = 5972370000000000000000000 * kilogram = M⊕')
 ureg.define('earth_radius = 6371 * km = R⊕')
 ureg.define('earth_density = 5.514 * g/cm**3 = ρ⊕')
 ureg.define('earth_gravity = 9.807 * m/s**2 = g⊕')
+ureg.define('earth_escape_velocity = 11.186*km/s')
 
 ureg.define('jovian_mass = 317.8 * earth_mass = M♃')
 ureg.define('jovian_radius = 69911 * km = R♃')

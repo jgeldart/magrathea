@@ -1,0 +1,42 @@
+{% load wagtailcore_tags app_filters %}
+
+<section class="uk-section uk-section-{{ value.style }}">
+  <div class="uk-container">
+    <h3>Orbital characteristics</h3>
+
+    <div class="uk-grid-match uk-child-width-1-4@m" uk-grid>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Semi-major axis</dt>
+          <dd>{{ page.semi_major_axis | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ page.semi_major_axis | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
+          <dt>Eccentricity</dt>
+          <dd>{{ page.eccentricity | floatformat:5 }}</dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Periapsis</dt>
+          <dd>{{ page.periapsis | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ page.periapsis | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
+          <dt>Apoapsis</dt>
+          <dd>{{ page.apoapsis | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ page.apoapsis | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Orbital period</dt>
+          <dd>{{ page.orbital_period | quantity_convert:"year" | quantity_magnitude | floatformat:3 }} years</dd>
+          <dt>Inclination</dt>
+          <dd>{{ page.inclination | quantity_convert:"degree" | quantity_magnitude | floatformat:3 }}°</dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Longitude of the ascending node</dt>
+          <dd>{{ page.longitude_of_the_ascending_node | quantity_convert:"degree" | quantity_magnitude | floatformat:3 }}°</dd>
+          <dt>Argument of periapsis</dt>
+          <dd>{{ page.argument_of_periapsis | quantity_convert:"degree" | quantity_magnitude | floatformat:3 }}°</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

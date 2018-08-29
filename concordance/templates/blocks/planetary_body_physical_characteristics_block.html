@@ -1,0 +1,60 @@
+{% load wagtailcore_tags app_filters %}
+
+<section class="uk-section uk-section-{{ value.style }}">
+  <div class="uk-container">
+    <h3>Physical characteristics</h3>
+
+    <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Mass</dt>
+          <dd>
+            {% if page.mass_is_jovian %}
+              {{ page.mass | quantity_convert:"jovian_mass" | quantity_magnitude | floatformat:2 }} M<sub>♃</sub> ({{ page.mass | quantity_convert:"kg" | quantity_magnitude | scientific_notation | safe }} kg)
+            {% elif page.mass_is_terran %}
+              {{ page.mass | quantity_convert:"earth_mass" | quantity_magnitude | floatformat:3 }} M<sub>⊕</sub> ({{ page.mass | quantity_convert:"kg" | quantity_magnitude | scientific_notation | safe }} kg)
+            {% else %}
+              {{ page.mass | quantity_convert:"kg" | quantity_magnitude | scientific_notation | safe }} kg
+            {% endif %}
+          </dd>
+          <dt>Radius</dt>
+          <dd>
+            {% if page.radius_is_jovian %}
+              {{ page.radius | quantity_convert:"jovian_radius" | quantity_magnitude | floatformat:2 }} R<sub>♃</sub> ({{ page.radius | quantity_convert:"km" | quantity_magnitude | floatformat:"0" }} km)
+            {% elif page.radius_is_terran %}
+              {{ page.radius | quantity_convert:"earth_radius" | quantity_magnitude | floatformat:3 }} R<sub>⊕</sub> ({{ page.radius | quantity_convert:"km" | quantity_magnitude | floatformat:"0" }} km)
+            {% else %}
+              {{ page.radius | quantity_convert:"km" | quantity_magnitude | floatformat:"0" }} km
+            {% endif %}
+          </dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Density</dt>
+          <dd>
+            {% if page.mass_is_jovian %}
+              {{ page.density | quantity_convert:"jovian_density" | quantity_magnitude | floatformat:2 }} ρ<sub>♃</sub> ({{ page.density | quantity_convert:"kg/m**3" | quantity_magnitude | floatformat:2 }} kg m<sup>-3</sup>)
+            {% elif page.mass_is_terran %}
+              {{ page.density | quantity_convert:"earth_density" | quantity_magnitude | floatformat:3 }} ρ<sub>⊕</sub> ({{ page.density | quantity_convert:"kg/m**3" | quantity_magnitude | floatformat:2 }} kg m<sup>-3</sup>)
+            {% else %}
+              {{ page.density | quantity_convert:"kg/m**3" | quantity_magnitude | floatformat:2 }} kg m<sup>-3</sup>
+            {% endif %}
+          </dd>
+          <dt>Surface gravity</dt>
+          <dd>
+            {{ page.surface_gravity | quantity_convert:"earth_gravity" | quantity_magnitude | floatformat:2 }} g<sub>⊕</sub> ({{ page.surface_gravity | quantity_convert:"m/s**2" | quantity_magnitude | floatformat:2 }} ms<sup>-2</sup>)
+          </dd>
+        </dl>
+      </div>
+      <div>
+        <dl class="uk-description-list">
+          <dt>Escape velocity</dt>
+          <dd>
+            {{ page.escape_velocity | quantity_convert:"earth_escape_velocity" | quantity_magnitude | floatformat:2 }} v<sub>e⊕</sub> ({{ page.escape_velocity | quantity_convert:"m/s" | quantity_magnitude | floatformat:2 }} ms<sup>-1</sup>)
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
