@@ -6,13 +6,10 @@
   <article class="uk-article">
     <section class="uk-section-default">
       {% image self.hero_image fill-1280x160 as heroimg %}
-      <div class="uk-section uk-light uk-background-cover" style="{% if self.hero_image %}background-image: url({{heroimg.url}});{% endif %}">
+      <div class="uk-section{% if self.hero_image %} uk-light{% endif %} uk-background-cover" style="{% if self.hero_image %}background-image: url({{heroimg.url}});{% endif %}">
         <div class="uk-container">
           <h1 class="uk-heading-hero">{{ self.title }}</h1>
           <h2>{{ self.subtitle }}</h2>
-          <p class="uk-article-meta">
-            Recorded by {{ self.owner.first_name }} {{ self.owner.last_name }}
-          </p>
           <div class="uk-text-lead">
             {{ self.lead | safe }}
           </div>
