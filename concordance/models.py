@@ -10,9 +10,11 @@ from quantity_field import ureg
 from quantity_field.fields import MultiQuantityField
 Q_ = ureg.Quantity
 
+from .blocks import StarPhysicalCharacteristicsBlock, StarOrbitalCharacteristicsBlock
+
 COMMON_BLOCKS = [
     ('heading', blocks.CharBlock(classname="full title")),
-    ('paragraph', blocks.RichTextBlock()),
+    ('paragraph', blocks.RichTextBlock(template="blocks/rich_text_block.html")),
     ('image', ImageChooserBlock()),
 ]
 
@@ -39,6 +41,10 @@ class StarPage(ConcordanceEntryMixin, Page):
     star in them. Bodies that orbit are created under the star as subpages.
     """
 
+    body = StreamField(COMMON_BLOCKS + [
+        ('physical_characteristics', StarPhysicalCharacteristicsBlock()),
+        ('orbital_characteristics', StarOrbitalCharacteristicsBlock()),
+    ])
     mass = MultiQuantityField(units=(ureg.solar_mass, ureg.kilogram))
 
     @property

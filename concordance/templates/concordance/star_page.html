@@ -8,71 +8,8 @@
   <p class="uk-article-meta">
     Recorded by {{ self.owner.first_name }} {{ self.owner.last_name }}
   </p>
+</section>
 
   {% include_block self.body %}
-</section>
-
-<section class="uk-section uk-section-muted">
-  <div class="uk-container">
-    <h3>Physical characteristics</h3>
-
-    <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-      <div>
-        <dl class="uk-description-list">
-          <dt>Mass</dt>
-          <dd>{{ self.mass | quantity_convert:"solar_mass" | quantity_magnitude | floatformat:2 }} M<sub>☉</sub> ({{ self.mass | quantity_convert:"kg" | quantity_magnitude | scientific_notation | safe }} kg)</dd>
-          <dt>Radius</dt>
-          <dd>{{ self.radius | quantity_convert:"solar_radius" | quantity_magnitude | floatformat:2 }} R<sub>☉</sub> ({{ self.radius | quantity_convert:"km" | quantity_magnitude | floatformat:"0" }} km)</dd>
-        </dl>
-      </div>
-      <div>
-        <dl class="uk-description-list">
-          <dt>Luminosity</dt>
-          <dd>{{ self.luminosity | quantity_convert:"solar_luminosity" | quantity_magnitude | floatformat:2 }} L<sub>☉</sub> ({{ self.luminosity | quantity_convert:"watt" | quantity_magnitude | scientific_notation | safe }} W)</dd>
-          <dt>Surface temperature</dt>
-          <dd>{{ self.surface_temperature | quantity_convert:"solar_surface_temperature" | quantity_magnitude | floatformat:2 }} T<sub>☉</sub> ({{ self.surface_temperature | quantity_convert:"kelvin" | quantity_magnitude | floatformat:"0" }}K)</dd>
-        </dl>
-      </div>
-      <div>
-        <dl class="uk-description-list">
-          <dt>Spectral class</dt>
-          <dd>{{ self.spectral_class }}</dd>
-        </dl>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="uk-section uk-section-muted">
-  <div class="uk-container">
-    <h3>Orbital characteristics</h3>
-
-
-    <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-      <div>
-        <dl class="uk-description-list">
-          <dt>System radius (inner)</dt>
-          <dd>{{ self.system_boundary_inner | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ self.system_boundary_inner | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
-          <dt>System radius (outer)</dt>
-          <dd>{{ self.system_boundary_outer | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ self.system_boundary_outer | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
-        </dl>
-      </div>
-      <div>
-        <dl class="uk-description-list">
-          <dt>Habitable zone (inner)</dt>
-          <dd>{{ self.habitable_zone_inner | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ self.habitable_zone_inner | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
-          <dt>Habitable zone (outer)</dt>
-          <dd>{{ self.habitable_zone_outer | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ self.habitable_zone_outer | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
-        </dl>
-      </div>
-      <div>
-        <dl class="uk-description-list">
-          <dt>Frost line</dt>
-          <dd>{{ self.frost_line | quantity_convert:"au" | quantity_magnitude | floatformat:2 }} AU ({{ self.frost_line | quantity_convert:"km" | quantity_magnitude | scientific_notation | safe }} km)</dd>
-        </dl>
-      </div>
-    </div>
-  </div>
-</section>
 
 {% endblock %}
