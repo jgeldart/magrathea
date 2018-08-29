@@ -25,11 +25,11 @@ help:
 .PHONY: requirements
 
 
-develop_env: virtualenv requirements db initial_data update_modules migrate copy_media node_modules runserver
+develop_env: requirements db initial_data update_modules migrate copy_media node_modules runserver
 
 # Command variables
-MANAGE_CMD = python manage.py
-PIP_INSTALL_CMD = pip install
+MANAGE_CMD = python3 manage.py
+PIP_INSTALL_CMD = pip3 install
 PLAYBOOK = ansible-playbook
 VIRTUALENV_NAME = venv
 
@@ -51,7 +51,7 @@ requirements:
 	)
 
 db:
-	createdb $(PROJECT_NAME)
+	createdb -h localhost -p 5432 -U postgres -O django $(PROJECT_NAME)
 
 migrate:
 	( \
@@ -62,7 +62,7 @@ migrate:
 initial_data:
 	( \
 		. $(VIRTUALENV_NAME)/bin/activate; \
-		psql -d $(PROJECT_NAME) -f ansible/roles/web/files/initial_data.sql; \
+		psql -h localhost -p 5432 -U postgres -d $(PROJECT_NAME) -f ansible/roles/web/files/initial_data.sql; \
 	)
 
 copy_media:
@@ -76,7 +76,7 @@ update_modules:
 		. $(VIRTUALENV_NAME)/bin/activate; \
 		$ wagtail updatemodulepaths; \
 	)
-	
+
 runserver:
 	( \
 		. $(VIRTUALENV_NAME)/bin/activate; \
