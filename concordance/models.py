@@ -1,10 +1,12 @@
 from django.db import models
 from modelcluster.fields import ParentalKey
 from wagtail.core.models import Page
-from wagtail.core.fields import StreamField
+from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core import blocks
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, StreamFieldPanel, PageChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, StreamFieldPanel, PageChooserPanel, RichTextFieldPanel
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.models import Image
 
 from quantity_field import ureg
 from quantity_field.fields import MultiQuantityField
@@ -23,9 +25,24 @@ class ConcordanceEntryMixin(models.Model):
     A mixin for any page that should have common concordance fields.
     """
 
+    subtitle = models.TextField(blank=True)
+
+    lead = RichTextField(blank=True)
+
+    hero_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
     body = StreamField(COMMON_BLOCKS)
 
     content_panels = Page.content_panels + [
+        FieldPanel('subtitle'),
+        ImageChooserPanel('hero_image'),
+        RichTextFieldPanel('lead'),
         StreamFieldPanel('body'),
     ]
 
