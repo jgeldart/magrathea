@@ -3,9 +3,14 @@
 {% load app_filters %}
 
 {% block concordance_content %}
-<h1 class="uk-article-title">{{ self.title }}</h1>
+<section class="uk-container">
+  <h1 class="uk-article-title">{{ self.title }}</h1>
+  <p class="uk-article-meta">
+    Recorded by {{ self.owner.first_name }} {{ self.owner.last_name }}
+  </p>
 
-{% include_block self.body %}
+  {% include_block self.body %}
+</section>
 
 <section class="uk-section uk-section-muted">
   <div class="uk-container">
