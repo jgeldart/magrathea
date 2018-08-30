@@ -1,6 +1,6 @@
 {% load wagtailcore_tags app_filters %}
 
-<section class="uk-section uk-section-{{ value.style }}">
+<section class="uk-section uk-section-{% if value %}{{ value.style }}{% else %}default{% endif %}">
   <div class="uk-container">
     <h3>Orbital characteristics</h3>
 

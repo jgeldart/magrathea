@@ -2,8 +2,18 @@
 {% load wagtailcore_tags %}
 {% load app_filters %}
 
-{% block concordance_content %}
+{% block page_section_titles %}
+  <li class="uk-active"><a href="#">Article</a></li>
+  <li><a href="#properties">Properties</a></li>
+{% endblock %}
 
-  {% include_block self.body %}
-
+{% block page_sections %}
+  <li>
+    {% include_block self.body %}
+  </li>
+  <li>
+    {% include "blocks/planetary_body_physical_characteristics_block.html" %}
+    {% include "blocks/orbital_mechanics_orbital_characteristics_block.html" %}
+    {% include "blocks/orbital_mechanics_rotational_characteristics_block.html" %}
+  </li>
 {% endblock %}

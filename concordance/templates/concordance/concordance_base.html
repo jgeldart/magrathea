@@ -13,9 +13,15 @@
           <div class="uk-text-lead">
             {{ self.lead | safe }}
           </div>
+          <ul class="width-1-1" uk-tab="connect: .page-sections">
+            {% block page_section_titles %}{% endblock %}
+          </ul>
         </div>
       </div>
     </section>
     {% block concordance_content %}{% endblock %}
+    <ul class="page-sections uk-switcher uk-switcher-container uk-margin">
+      {% block page_sections %}{% endblock %}
+    </ul>
   </article>
 {% endblock %}
