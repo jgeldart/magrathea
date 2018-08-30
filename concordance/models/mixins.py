@@ -78,6 +78,11 @@ class OrbitalMechanicsMixin(models.Model):
         return (((4 * math.pi**2) / (GRAVITATIONAL_CONSTANT * self.orbited_object.mass)) * self.semi_major_axis**3)**0.5
 
     @property
+    def longitude_of_periapsis(self):
+        return self.longitude_of_the_ascending_node + self.argument_of_periapsis
+
+
+    @property
     def day_length(self):
         return self.rotational_period
 
@@ -158,6 +163,92 @@ class PlanetaryBodyMixin(OrbitalMechanicsMixin):
     @property
     def solar_constant(self):
         return self.orbited_object.luminosity / self.semi_major_axis ** 2
+
+    @property
+    def seasonal_insolation(self):
+        return {
+            'equator': {
+                'vernal_equinox': self.surface_insolation(Q_(0, ureg.degree), Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(Q_(0, ureg.degree), Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(Q_(0, ureg.degree), Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(Q_(0, ureg.degree), Q_(270, ureg.degree))
+            },
+            'north_tropic': {
+                'vernal_equinox': self.surface_insolation(self.tropics, Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(self.tropics, Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(self.tropics, Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(self.tropics, Q_(270, ureg.degree))
+            },
+            'north_polar_circle': {
+                'vernal_equinox': self.surface_insolation(self.polar_circles, Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(self.polar_circles, Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(self.polar_circles, Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(self.polar_circles, Q_(270, ureg.degree))
+            },
+            'north_pole': {
+                'vernal_equinox': self.surface_insolation(Q_(90, ureg.degree), Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(Q_(90, ureg.degree), Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(Q_(90, ureg.degree), Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(Q_(90, ureg.degree), Q_(270, ureg.degree))
+            },
+            'south_tropic': {
+                'vernal_equinox': self.surface_insolation(-self.tropics, Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(-self.tropics, Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(-self.tropics, Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(-self.tropics, Q_(270, ureg.degree))
+            },
+            'south_polar_circle': {
+                'vernal_equinox': self.surface_insolation(-self.polar_circles, Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(-self.polar_circles, Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(-self.polar_circles, Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(-self.polar_circles, Q_(270, ureg.degree))
+            },
+            'south_pole': {
+                'vernal_equinox': self.surface_insolation(Q_(-90, ureg.degree), Q_(0, ureg.degree)),
+                'summer_solstice': self.surface_insolation(Q_(-90, ureg.degree), Q_(90, ureg.degree)),
+                'autumnal_equinox': self.surface_insolation(Q_(-90, ureg.degree), Q_(180, ureg.degree)),
+                'winter_solstice': self.surface_insolation(Q_(-90, ureg.degree), Q_(270, ureg.degree))
+            }
+        }
+
+    def declination(self, true_anomaly):
+        """
+        Calculates the declination at a given point in the orbit.
+
+        We assume that the vernal equinox is at 0.
+        """
+        return self.obliquity * math.sin(true_anomaly)
+
+    def sunrise_hour_angle(self, latitude, true_anomaly):
+        """
+        Calculate the hour angle at which the sun rises for this body at this latitude
+        and orbital_position.
+
+        If the sun never rises here (for example at the poles in winter), then
+        returns None.
+        """
+        cos_h0 = -1 * math.tan(latitude) * math.tan(self.declination(Q_(180, ureg.degree)- true_anomaly))
+        if cos_h0 > 1:
+            return math.pi * ureg.radian
+        elif cos_h0 < -1:
+            return None
+        else:
+            return math.acos(cos_h0) * ureg.radian
+
+    def surface_insolation(self, latitude, true_anomaly):
+        """
+        Calculate the amount of radiation received at a given point on the
+        surface of this planet, assuming no atmosphere.
+        """
+        distance_ratio = 1 + float(self.eccentricity) * math.cos(true_anomaly - self.longitude_of_periapsis)
+        hour_angle_0 = self.sunrise_hour_angle(latitude, true_anomaly)
+        if hour_angle_0 is None:
+            return Q_(0, ureg.watt / ureg.meter**2)
+        else:
+            return self.solar_constant/math.pi * distance_ratio**2 * (
+                hour_angle_0 * math.sin(latitude) * math.sin(self.declination(true_anomaly)) +
+                math.cos(latitude) * math.cos(self.declination(true_anomaly)) * math.sin(hour_angle_0)
+            )
 
     content_panels = [
         FieldRowPanel([

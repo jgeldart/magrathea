@@ -1,0 +1,159 @@
+{% load wagtailcore_tags app_filters %}
+
+<section class="uk-section uk-section-{% if value %}{{ value.style }}{% else %}default{% endif %}">
+  <div class="uk-container">
+    <h3>Seasonal insolation</h3>
+
+    <table class="uk-table uk-table-responsive">
+      <thead>
+        <tr>
+          <th>
+          </th>
+          <th>Vernal equinox</th>
+          <th>Summer solstice</th>
+          <th>Autumnal equinox</th>
+          <th>Winter solstice</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% with seasonal_insolation=page.seasonal_insolation %}
+        <tr>
+          {% with lat=seasonal_insolation.north_polar_circle %}
+          <th>
+            North polar circle
+          </th>
+          <td>
+            {% with val=lat.vernal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.summer_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.autumnal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.winter_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          {% endwith %}
+        </tr>
+        <tr>
+          {% with lat=seasonal_insolation.north_tropic %}
+          <th>
+            North tropic
+          </th>
+          <td>
+            {% with val=lat.vernal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.summer_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.autumnal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.winter_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          {% endwith %}
+        </tr>
+        <tr>
+          {% with lat=seasonal_insolation.equator %}
+          <th>
+            Equator
+          </th>
+          <td>
+            {% with val=lat.vernal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.summer_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.autumnal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.winter_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          {% endwith %}
+        </tr>
+        <tr>
+          {% with lat=seasonal_insolation.south_tropic %}
+          <th>
+            South tropic
+          </th>
+          <td>
+            {% with val=lat.vernal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.summer_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.autumnal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.winter_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          {% endwith %}
+        </tr>
+        <tr>
+          {% with lat=seasonal_insolation.south_polar_circle %}
+          <th>
+            South polar circle
+          </th>
+          <td>
+            {% with val=lat.vernal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.summer_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.autumnal_equinox %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          <td>
+            {% with val=lat.winter_solstice %}
+              {{ val | quantity_convert:"earth_insolation" | quantity_magnitude | floatformat:3 }} Q<sub>⊕</sub> ({{ val | quantity_convert:"watt/m**2" | quantity_magnitude | floatformat:3 }} W m<sup>-2</sup>)
+            {% endwith %}
+          </td>
+          {% endwith %}
+        </tr>
+        {% endwith %}
+      </tbody>
+    </table>
+  </div>
+</section>
