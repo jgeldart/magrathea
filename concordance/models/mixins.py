@@ -2,7 +2,7 @@ from django.db import models
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, RichTextFieldPanel, FieldRowPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, RichTextFieldPanel, FieldRowPanel, MultiFieldPanel
 from wagtail.images.models import Image
 from wagtail.images.edit_handlers import ImageChooserPanel
 
@@ -34,8 +34,8 @@ class ConcordanceEntryMixin(models.Model):
     body = StreamField(COMMON_BLOCKS)
 
     content_panels = Page.content_panels + [
-        FieldPanel('subtitle'),
         ImageChooserPanel('hero_image'),
+        FieldPanel('subtitle'),
         RichTextFieldPanel('lead'),
         StreamFieldPanel('body'),
     ]
@@ -98,22 +98,22 @@ class OrbitalMechanicsMixin(models.Model):
     def polar_circles(self):
         return Q_('90 degree') - self.obliquity
 
-    content_panels = [
-        FieldRowPanel([
-            FieldPanel('semi_major_axis'),
-            FieldPanel('eccentricity'),
-        ]),
-        FieldRowPanel([
-            FieldPanel('inclination'),
-            FieldPanel('longitude_of_the_ascending_node'),
-            FieldPanel('argument_of_periapsis'),
-        ]),
-        FieldRowPanel([
-            FieldPanel('rotational_period'),
-            FieldPanel('obliquity'),
-            FieldPanel('precessional_period'),
-        ]),
-    ]
+    content_panels = [MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('semi_major_axis'),
+                FieldPanel('eccentricity'),
+            ]),
+            FieldRowPanel([
+                FieldPanel('inclination'),
+                FieldPanel('longitude_of_the_ascending_node'),
+                FieldPanel('argument_of_periapsis'),
+            ]),
+            FieldRowPanel([
+                FieldPanel('rotational_period'),
+                FieldPanel('obliquity'),
+                FieldPanel('precessional_period'),
+            ]),
+        ], 'Orbital properties')]
 
     class Meta:
         abstract = True
@@ -250,12 +250,13 @@ class PlanetaryBodyMixin(OrbitalMechanicsMixin):
                 math.cos(latitude) * math.cos(self.declination(true_anomaly)) * math.sin(hour_angle_0)
             )
 
-    content_panels = [
+    content_panels = [ MultiFieldPanel([
         FieldRowPanel([
             FieldPanel('mass'),
             FieldPanel('radius'),
         ]),
-    ] + OrbitalMechanicsMixin.content_panels
+
+    ], 'Physical properties')] + OrbitalMechanicsMixin.content_panels
 
     class Meta:
         abstract = True
