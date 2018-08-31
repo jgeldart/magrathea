@@ -1,9 +1,9 @@
 {% load wagtailcore_tags app_filters %}
 {% load wagtailimages_tags %}
 
-<section class="uk-section uk-section-{% if value %}{{ value.style }}{% else %}default{% endif %}">
+<section class="uk-section uk-preserve-color uk-section-{% if value %}{{ value.style }}{% else %}default{% endif %}">
   <div class="uk-container">
-    <div uk-grid>
+    <div class="uk-light" uk-grid>
       <h3 class="uk-width-expand">{{ value.title }}</h3>
       {% if value.show_orrery %}
       <div>
