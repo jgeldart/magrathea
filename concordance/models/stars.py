@@ -7,8 +7,9 @@ from quantity_field.fields import MultiQuantityField
 Q_ = ureg.Quantity
 
 from .base import COMMON_BLOCKS
+from .planetary_bodies import GasPlanetPage
 from .mixins import ConcordanceEntryMixin
-from ..blocks import StarPhysicalCharacteristicsBlock, StarOrbitalCharacteristicsBlock
+from ..blocks import StarPhysicalCharacteristicsBlock, StarOrbitalCharacteristicsBlock, OrbitalMechanicsOrbiterBlock
 
 import math
 
@@ -24,6 +25,7 @@ class StarPage(ConcordanceEntryMixin, Page):
     body = StreamField(COMMON_BLOCKS + [
         ('physical_characteristics', StarPhysicalCharacteristicsBlock()),
         ('orbital_characteristics', StarOrbitalCharacteristicsBlock()),
+        ('orbiters', OrbitalMechanicsOrbiterBlock()),
     ])
     mass = MultiQuantityField(units=(ureg.solar_mass, ureg.kilogram))
 
@@ -156,6 +158,48 @@ class StarPage(ConcordanceEntryMixin, Page):
                 blue = tmp_blue
 
         return red, green, blue
+
+    @property
+    def to_orrery(self):
+        """
+        Create a dict containing the orrery settings.
+
+        TODO: This should be moved to a view.
+        """
+        r,g,b = self.colour
+        return {
+            'title': self.title,
+            'name': self.slug.replace('-', '_'),
+            'mass': self.mass.to(ureg.kg).magnitude,
+            'radius': self.radius.to(ureg.km).magnitude,
+            'color': '#{0}{1}{2}'.format(format(int(r), '02x'),format(int(g), '02x'), format(int(b), '02x')),
+            # 'map': '/static/img/sunmap.jpg',
+            'k': 0.01720209895,
+        }
+
+    @property
+    def to_orrery_scenario(self):
+        child_planets = self.get_descendants().type(GasPlanetPage).all()
+        scenario_objects = [self.to_orrery] + [ p.specific.to_orrery for p in child_planets ]
+        bodies = {}
+        for p in scenario_objects:
+            bodies[p['name']] = p
+
+        return {
+            'name': '{0}-star-system'.format(self.slug).replace('-', '_'),
+            'title': '{0} star system'.format(self.title),
+            'bodies': bodies,
+            'secondsPerTick': {
+                'min': 60,
+                'max': 3600 * 15,
+                'initial': 3600
+            },
+            'defaultGuiSettings': {
+                'playing': False,
+                'planetScale': 10
+            },
+            'help':''
+        }
 
     content_panels = ConcordanceEntryMixin.content_panels + [
         FieldPanel('mass'),

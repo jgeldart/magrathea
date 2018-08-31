@@ -1,0 +1,126 @@
+{% load wagtailcore_tags app_filters %}
+{% load wagtailimages_tags %}
+
+<section class="uk-section uk-section-{% if value %}{{ value.style }}{% else %}default{% endif %}">
+  <div class="uk-container">
+    <div uk-grid>
+      <h3 class="uk-width-expand">{{ value.title }}</h3>
+      {% if value.show_orrery %}
+      <div>
+        <a href="#" class="uk-button uk-button-secondary" uk-toggle="target: #orrery-{{ value.title | slugify }}" type="button">Orrery</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="uk-child-width-1-3@m uk-grid-small" uk-grid uk-height-match="target: > div > .uk-card">
+      {% for page in value.orbiters %}
+        {% with orbiter=page.specific %}
+        <div>
+          <div class="uk-card uk-card-small uk-card-default">
+            {% if orbiter.hero_image %}
+              <div class="uk-card-media-top">
+                {% image orbiter.hero_image width-512 %}
+              </div>
+            {% endif %}
+            <div class="uk-card-body">
+              <h4>{{ orbiter.title }}</h4>
+              {{ orbiter.lead | safe }}
+            </div>
+            <div class="uk-card-footer">
+              <a href="{% pageurl orbiter %}" class="uk-button uk-button-text">Learn more</a>
+            </div>
+          </div>
+        </div>
+        {% endwith %}
+      {% endfor %}
+      {% if value.show_orrery %}
+        <div id="orrery-{{ value.title | slugify }}" class="uk-modal-full" uk-modal>
+          <div class="uk-modal-dialog">
+            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+            <link href="/static/css/jsorrery.css" rel="stylesheet">
+            <div class="jsorrery" id="orrery-{{ value.title | slugify}}-jsorrery">
+
+              <nav id="gui">
+                <div id="status">
+                  <div id="startCont" class="inputContainer"></div>
+                  <div id="dateDisplay"></div>
+                </div>
+                <label id="dateLabel">
+                  <div>Date</div>
+                  <div id="dateCont" class="inputContainer"></div>
+                </label>
+                <label id="lookFromLabel">
+                  <div>Point of view</div>
+                  <div id="lookFromCont" class="inputContainer"></div>
+                </label>
+                <label id="lookAtLabel">
+                  <div>Look at</div>
+                  <div id="lookAtCont" class="inputContainer"></div>
+                </label>
+                <label id="planetScaleLabel">
+                  <div>Planet Scale <span class="valDisplay"></span>x </div>
+                  <div id="planetScaleCont" class="inputContainer"></div>
+                </label>
+                <label id="deltaTLabel">
+                  <div>Animation speed</div>
+                  <div id="deltaTCont" class="inputContainer"></div>
+                </label>
+
+                <div id="navCollapse" class="fa fa-angle-double-up"></div>
+              </nav>
+
+              <div class="preload">
+                <div class="orbit"><div class="planet"></div></div>
+                <div class="title">
+                  <h1>jsorrery</h1>
+                  <h2>solar system</h2>
+                </div>
+              </div>
+
+
+              <script src="/static/data/elp.js"></script>
+              <script src="/static/data/vsop-earth.js"></script>
+              <script id="orrery-{{ value.title | slugify }}-scenario" type="application/json">
+              {
+                "name": "orrery_scenario",
+                "title": "{{ value.title }}",
+                "secondsPerTick" : {
+                  "min" : 60,
+                  "max" : 241920,
+                  "initial": 3600
+                },
+                "defaultGuiSettings": {
+                  "playing": true,
+                  "planetScale": 10
+                },
+                "help": "",
+                "bodies": {
+                  "{{ page.slug | dashreplace:"_" }}": {{ page.to_orrery | jsondump }},
+                  {% for p in value.orbiters %}
+                  {% with orbiter=p.specific %}
+                  "{{ p.slug | dashreplace:"_"}}": {{ orbiter.to_orrery | jsondump }}{% if forloop.last %}{% else %},{% endif %}
+                  {% endwith %}
+                  {% endfor %}
+                }
+              }
+              </script>
+              <script>
+                window.onJsOrreryLoaded = function(JSOrrery){
+                  const orreryModal = document.getElementById('orrery-{{ value.title | slugify }}');
+                  orreryModal.addEventListener('shown', function() {
+                    const jsOrrery = new JSOrrery('orrery-{{ value.title | slugify }}-jsorrery');
+                    const scenario = JSON.parse(document.getElementById('orrery-{{ value.title | slugify }}-scenario').textContent);
+                    jsOrrery.loadScenario(scenario, {});
+                  });
+                }
+
+              </script>
+              <script type="text/javascript" src="/static/js/jsorrery.js"></script>
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+    </div>
+  </div>
+</section>
