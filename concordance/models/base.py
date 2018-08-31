@@ -5,7 +5,7 @@ from quantity_field import ureg
 Q_ = ureg.Quantity
 
 COMMON_BLOCKS = [
-    ('heading', blocks.CharBlock(classname="full title")),
+    ('heading', blocks.CharBlock(classname="full title", template="blocks/heading_block.html")),
     ('paragraph', blocks.RichTextBlock(template="blocks/rich_text_block.html")),
     ('image', ImageChooserBlock()),
 ]
