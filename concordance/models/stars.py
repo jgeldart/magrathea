@@ -7,7 +7,7 @@ from quantity_field.fields import MultiQuantityField
 Q_ = ureg.Quantity
 
 from .base import COMMON_BLOCKS
-from .planetary_bodies import GasPlanetPage
+from .planetary_bodies import PlanetPage
 from .mixins import ConcordanceEntryMixin
 from ..blocks import StarPhysicalCharacteristicsBlock, StarOrbitalCharacteristicsBlock, OrbitalMechanicsOrbiterBlock
 
@@ -179,7 +179,7 @@ class StarPage(ConcordanceEntryMixin, Page):
 
     @property
     def to_orrery_scenario(self):
-        child_planets = self.get_descendants().type(GasPlanetPage).all()
+        child_planets = self.get_descendants().type(PlanetPage).all()
         scenario_objects = [self.to_orrery] + [ p.specific.to_orrery for p in child_planets ]
         bodies = {}
         for p in scenario_objects:

@@ -19,7 +19,7 @@ class OrbitalMechanicsOrbiterBlock(blocks.StructBlock):
 
     style = blocks.ChoiceBlock(choices=STYLE_CHOICES, default='default')
 
-    orbiters = blocks.ListBlock(blocks.PageChooserBlock(target_model=('concordance.GasPlanetPage',)))
+    orbiters = blocks.ListBlock(blocks.PageChooserBlock(target_model=('concordance.PlanetPage',)))
 
     show_orrery = blocks.BooleanBlock(required=False)
 

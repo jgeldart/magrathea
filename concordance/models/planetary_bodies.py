@@ -8,9 +8,9 @@ from .base import COMMON_BLOCKS
 from .mixins import ConcordanceEntryMixin, PlanetaryBodyMixin
 from ..blocks import OrbitalMechanicsOrbitalCharacteristicsBlock, OrbitalMechanicsRotationalCharacteristicsBlock, PlanetaryBodyPhysicalCharacteristicsBlock, PlanetaryBodySeasonalCharacteristicsBlock
 
-class GasPlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
+class PlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
     """
-    A gaseous planetary body. Add as a child page to a star so it picks up the orbital
+    A planetary body. Add as a child page to a star so it picks up the orbital
     mechanical properties.
     """
     body = StreamField(COMMON_BLOCKS + [
@@ -33,7 +33,6 @@ class GasPlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
             'mass': self.mass.to("kg").magnitude,
             'radius': self.radius.to("km").magnitude,
             'color': '#ff9932',
-            'map': '/static/img/jupitermap.jpg',
             'siderealDay': self.rotational_period.to("second").magnitude,
             'tilt': self.obliquity.to("degree").magnitude,
             'relativeTo': self.orbited_object.slug.replace('-', '_'),
