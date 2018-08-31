@@ -6,7 +6,7 @@ Q_ = ureg.Quantity
 
 from .base import COMMON_BLOCKS
 from .mixins import ConcordanceEntryMixin, PlanetaryBodyMixin
-from ..blocks import OrbitalMechanicsOrbitalCharacteristicsBlock, OrbitalMechanicsRotationalCharacteristicsBlock, PlanetaryBodyPhysicalCharacteristicsBlock
+from ..blocks import OrbitalMechanicsOrbitalCharacteristicsBlock, OrbitalMechanicsRotationalCharacteristicsBlock, PlanetaryBodyPhysicalCharacteristicsBlock, PlanetaryBodySeasonalCharacteristicsBlock
 
 class GasPlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
     """
@@ -17,6 +17,7 @@ class GasPlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
         ('orbital_characteristics', OrbitalMechanicsOrbitalCharacteristicsBlock()),
         ('rotational_characteristics', OrbitalMechanicsRotationalCharacteristicsBlock()),
         ('physical_characteristics', PlanetaryBodyPhysicalCharacteristicsBlock()),
+        ('seasonal_characteristics', PlanetaryBodySeasonalCharacteristicsBlock()),
     ])
 
     @property
