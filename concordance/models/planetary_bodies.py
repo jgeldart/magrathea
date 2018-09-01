@@ -44,13 +44,13 @@ class PercentageField(models.FloatField):
     def to_python(self, value):
         val = super(PercentageField, self).to_python(value)
         if is_number(val):
-            return val/100
+            return val*100
         return val
 
     def prepare_value(self, value):
         val = super(PercentageField, self).prepare_value(value)
         if is_number(val) and not isinstance(val, str):
-            return str((float(val)*100))
+            return str((float(val)/100))
         return val
 
 @register_snippet
@@ -122,7 +122,7 @@ class AtmosphericComponent(Orderable, models.Model):
     planetary_body = ParentalKey('concordance.PlanetPage', on_delete=models.CASCADE, related_name='atmospheric_components')
     atmospheric_gas = models.ForeignKey('concordance.AtmosphericGas', on_delete=models.CASCADE, related_name='+')
 
-    percentage = PercentageField()
+    percentage = models.FloatField()
 
     @property
     def partial_pressure(self):
@@ -166,7 +166,7 @@ class PlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
         Calculate the refractive index of this atmosphere based on the
         component gasses and their proportions.
         """
-        return sum(atmospheric_component.percentage * atmospheric_component.atmospheric_gas.refractive_index for atmospheric_component in self.atmospheric_components.all())
+        return sum(atmospheric_component.percentage/100 * atmospheric_component.atmospheric_gas.refractive_index for atmospheric_component in self.atmospheric_components.all())
 
     @property
     def scale_height(self):
@@ -198,7 +198,7 @@ class PlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
         P = P0 * Exp(- h/H)
         h = -H * ln(Ps/P0)
         """
-        return -self.scale_height * math.log(Q_(0.00001, ureg.atm) / self.surface_pressure)
+        return -self.scale_height * math.log(Q_(6E-6, ureg.atm) / self.surface_pressure)
 
     def molecular_number_density(self, height):
         """
@@ -242,7 +242,7 @@ class PlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
         """
         The mass of the atmosphere per mole
         """
-        return sum(atmospheric_component.percentage * atmospheric_component.atmospheric_gas.molar_weight for atmospheric_component in self.atmospheric_components.all())
+        return sum(atmospheric_component.percentage/100 * atmospheric_component.atmospheric_gas.molar_weight for atmospheric_component in self.atmospheric_components.all())
 
     @property
     def to_orrery(self):
