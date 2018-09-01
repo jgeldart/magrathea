@@ -10,7 +10,7 @@ from quantity_field import ureg
 from quantity_field.fields import MultiQuantityField
 Q_ = ureg.Quantity
 
-from .base import COMMON_BLOCKS, GRAVITATIONAL_CONSTANT
+from .base import COMMON_BLOCKS, GRAVITATIONAL_CONSTANT, STEFAN_CONSTANT
 
 import math
 
@@ -158,11 +158,14 @@ class PlanetaryBodyMixin(OrbitalMechanicsMixin):
 
     @property
     def mean_surface_temperature(self):
-        return self.orbited_object.luminosity**0.25 / self.semi_major_axis**2
+        a_c = math.pi * self.radius**2
+        a_e = 4 * math.pi * self.radius**2
+        return ((self.solar_constant * a_c)/(STEFAN_CONSTANT * a_e))**0.25
+        # return self.orbited_object.luminosity**0.25 / self.semi_major_axis**2
 
     @property
     def solar_constant(self):
-        return self.orbited_object.luminosity / self.semi_major_axis ** 2
+        return self.orbited_object.luminosity / (4 * math.pi * self.semi_major_axis ** 2)
 
     @property
     def seasonal_insolation(self):

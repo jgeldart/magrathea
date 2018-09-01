@@ -11,3 +11,4 @@ COMMON_BLOCKS = [
 ]
 
 GRAVITATIONAL_CONSTANT = Q_('6.67408e-11 * m**3 * kg**-1 * s**-2')
+STEFAN_CONSTANT = Q_(5.670367e-8, ureg.watt * ureg.meter**-2 * ureg.kelvin**-4)
