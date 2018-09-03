@@ -1,11 +1,19 @@
 {
   "name": "magrathea",
   "version": "0.0.0",
+  "scripts": {
+    "build": "parcel build js/atmosphere-simulator.js --out-dir=build/ --public-url '/static/build'"
+  },
   "dependencies": {
     "foundation-sites": "6.5.0-rc.2",
-    "motion-ui": "~2.0.3"
+    "motion-ui": "~2.0.3",
+    "gl-geometry": "^2.0.0",
+    "gl-shader": "^4.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "glslify": "^6.3.0",
+    "parcel-bundler": "^1.9.7"
+  },
   "engines": {
     "node": ">=0.10.0"
   }

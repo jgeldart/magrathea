@@ -1,0 +1,111 @@
+{% load wagtailcore_tags app_filters %}
+
+<section class="uk-section uk-preserve-color uk-section-{% if value %}{{ value.style }}{% else %}default{% endif %}">
+  <div class="uk-container">
+    <div class="uk-light" uk-grid>
+      <h3 class="uk-width-expand">Sky simulation</h3>
+    </div>
+
+    <div class="uk-child-width-1-3@m uk-grid-small" uk-grid uk-height-match="target: > div > .uk-card">
+      <div>
+        <div class="uk-card uk-card-small uk-card-default">
+          <div class="uk-card-media-top" id="sky-simulation-day">
+            <script class="atmosphere-simulation" type="application/json">
+              {
+                "width": 512,
+                "height": 512,
+                "starAngle": 0,
+                "rayleighCoefficients": {
+                  "red": {{ page.rayleigh_scattering_coefficients.red | quantity_convert:"1/meter" | quantity_magnitude }},
+                  "green": {{ page.rayleigh_scattering_coefficients.green | quantity_convert:"1/meter" | quantity_magnitude }},
+                  "blue": {{ page.rayleigh_scattering_coefficients.blue | quantity_convert:"1/meter" | quantity_magnitude }}
+                },
+                "scaleHeight": {{ page.scale_height | quantity_convert:"meter" | quantity_magnitude }},
+                "atmosphereDepth" : {{ page.atmospheric_depth | quantity_convert:"meter" | quantity_magnitude }},
+                "planetRadius": {{ page.radius | quantity_convert:"meter" | quantity_magnitude }},
+                "starIntensity": 1,
+                "starColor": {
+                  "red": 1.0,
+                  "green": 1.0,
+                  "blue": 1.0
+                }
+              }
+            </script>
+          </div>
+          <div class="uk-card-body">
+            <h4>Day</h4>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="uk-card uk-card-small uk-card-default">
+          <div class="uk-card-media-top" id="sky-simulation-sunset">
+            <script class="atmosphere-simulation" type="application/json">
+              {
+                "width": 512,
+                "height": 512,
+                "starAngle":  2.0944,
+                "rayleighCoefficients": {
+                  "red": {{ page.rayleigh_scattering_coefficients.red | quantity_convert:"1/meter" | quantity_magnitude }},
+                  "green": {{ page.rayleigh_scattering_coefficients.green | quantity_convert:"1/meter" | quantity_magnitude }},
+                  "blue": {{ page.rayleigh_scattering_coefficients.blue | quantity_convert:"1/meter" | quantity_magnitude }}
+                },
+                "scaleHeight": {{ page.scale_height | quantity_convert:"meter" | quantity_magnitude }},
+                "atmosphereDepth" : {{ page.atmospheric_depth | quantity_convert:"meter" | quantity_magnitude }},
+                "planetRadius": {{ page.radius | quantity_convert:"meter" | quantity_magnitude }},
+                "starIntensity": 1,
+                "starColor": {
+                  "red": 1.0,
+                  "green": 1.0,
+                  "blue": 1.0
+                }
+              }
+            </script>
+          </div>
+          <div class="uk-card-body">
+            <h4>Sunrise/sunset</h4>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="uk-card uk-card-small uk-card-default">
+          <div class="uk-card-media-top" id="sky-simulation-dusk">
+            <script class="atmosphere-simulation" type="application/json">
+              {
+                "width": 512,
+                "height": 512,
+                "starAngle": 2.44346,
+                "rayleighCoefficients": {
+                  "red": {{ page.rayleigh_scattering_coefficients.red | quantity_convert:"1/meter" | quantity_magnitude }},
+                  "green": {{ page.rayleigh_scattering_coefficients.green | quantity_convert:"1/meter" | quantity_magnitude }},
+                  "blue": {{ page.rayleigh_scattering_coefficients.blue | quantity_convert:"1/meter" | quantity_magnitude }}
+                },
+                "scaleHeight": {{ page.scale_height | quantity_convert:"meter" | quantity_magnitude }},
+                "atmosphereDepth" : {{ page.atmospheric_depth | quantity_convert:"meter" | quantity_magnitude }},
+                "planetRadius": {{ page.radius | quantity_convert:"meter" | quantity_magnitude }},
+                "starIntensity": 1,
+                "starColor": {
+                  "red": 1.0,
+                  "green": 1.0,
+                  "blue": 1.0
+                }
+              }
+            </script>
+          </div>
+          <div class="uk-card-body">
+            <h4>Dusk</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  var simulator = document.createElement('script');
+  simulator.src = '/static/build/atmosphere-simulator.js';
+  // simulator.onload = function() {
+  //   var baseParams = JSON.parse(document.getElementById('sky-simulation-params').textContent);
+  //   window.createAtmosphere(document.getElementById('sky-simulation-day'), baseParams);
+  // };
+  document.body.appendChild(simulator);
+</script>

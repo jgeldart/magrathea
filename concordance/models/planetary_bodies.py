@@ -15,7 +15,7 @@ Q_ = ureg.Quantity
 
 from .base import COMMON_BLOCKS
 from .mixins import ConcordanceEntryMixin, PlanetaryBodyMixin
-from ..blocks import OrbitalMechanicsOrbitalCharacteristicsBlock, OrbitalMechanicsRotationalCharacteristicsBlock, PlanetaryBodyPhysicalCharacteristicsBlock, PlanetaryBodySeasonalCharacteristicsBlock
+from ..blocks import OrbitalMechanicsOrbitalCharacteristicsBlock, OrbitalMechanicsRotationalCharacteristicsBlock, PlanetaryBodyPhysicalCharacteristicsBlock, PlanetaryBodySeasonalCharacteristicsBlock, PlanetaryBodySkySimulationBlock
 
 AVOGADRO_CONSTANT = Q_(6.022140857e23, ureg.mol**-1)
 GAS_CONSTANT = Q_(8.3144598, ureg.joule * ureg.mol**-1 * ureg.kelvin**-1)
@@ -155,6 +155,7 @@ class PlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
         ('rotational_characteristics', OrbitalMechanicsRotationalCharacteristicsBlock()),
         ('physical_characteristics', PlanetaryBodyPhysicalCharacteristicsBlock()),
         ('seasonal_characteristics', PlanetaryBodySeasonalCharacteristicsBlock()),
+        ('sky_simulation', PlanetaryBodySkySimulationBlock()),
     ])
 
     # Atmospheric modelling
@@ -228,14 +229,12 @@ class PlanetPage(ConcordanceEntryMixin, PlanetaryBodyMixin, Page):
         """
         Return the scattering coefficients for red (680nm), green (550nm), and
         blue (440nm) light.
-
-        (8 * math.pi**3 * (n**2 - 1)**2)/3 * 1/N * 1/wavelength**4
         """
-        return [
-            self.rayleigh_scattering_coefficient(Q_('680 nanometer')),
-            self.rayleigh_scattering_coefficient(Q_('550 nanometer')),
-            self.rayleigh_scattering_coefficient(Q_('440 nanometer')),
-        ]
+        return {
+            'red': self.rayleigh_scattering_coefficient(Q_('680 nanometer')),
+            'green': self.rayleigh_scattering_coefficient(Q_('550 nanometer')),
+            'blue': self.rayleigh_scattering_coefficient(Q_('440 nanometer')),
+        }
 
     @property
     def atmospheric_weight(self):
